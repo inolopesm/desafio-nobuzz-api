@@ -13,3 +13,18 @@ CREATE TABLE IF NOT EXISTS "Tarefa" (
 );
 
 CREATE INDEX IF NOT EXISTS tarefa_datacriacao_idx ON "Tarefa" ("dataCriacao");
+
+-- 2023-11-07T09:20:00-03:00
+
+CREATE OR REPLACE FUNCTION trigger_set_dataatualizacao_to_now()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW."dataAtualizacao" = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER set_dataatualizacao_to_now
+BEFORE UPDATE ON "Tarefa"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_dataatualizacao_to_now();
