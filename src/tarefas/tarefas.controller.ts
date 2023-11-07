@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from "@nestjs/common";
 import { CreateTarefaDto } from "./dto/create-tarefa.dto";
 import { PgProvider } from "src/pg/pg.provider";
 import { Tarefa } from "./entities/tarefa.entity";
@@ -14,6 +22,22 @@ export class TarefasController {
     );
 
     return result.rows as Tarefa[];
+  }
+
+  @Get(":id")
+  async findOne(@Param("id", ParseUUIDPipe) id: string) {
+    const result = await this.pg.query(
+      'SELECT * FROM "Tarefa" WHERE "id" = $1',
+      [id]
+    );
+
+    const [tarefa] = result.rows as Tarefa[];
+
+    if (tarefa === undefined) {
+      throw new BadRequestException("Tarefa not found");
+    }
+
+    return tarefa;
   }
 
   @Post()
