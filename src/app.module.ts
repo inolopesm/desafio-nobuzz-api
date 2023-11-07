@@ -4,34 +4,25 @@ import { PgModule } from "libs/pg";
 import { SessoesModule } from "./sessoes/sessoes.module";
 import { TarefasModule } from "./tarefas/tarefas.module";
 import { UsuariosModule } from "./usuarios/usuarios.module";
+import { AutenticacoesModule } from "./autenticacoes/autenticacoes.module";
+
+const { POSTGRES_URL, SECRET } = process.env;
+
+if (POSTGRES_URL === undefined) {
+  throw new Error("POSTGRES_URL is a required field");
+}
+
+if (SECRET === undefined) {
+  throw new Error("SECRET is a required field");
+}
 
 @Module({
   imports: [
-    PgModule.registerAsync({
-      global: true,
-      useFactory: () => {
-        const { POSTGRES_URL } = process.env;
-
-        if (POSTGRES_URL === undefined) {
-          throw new Error("POSTGRES_URL is a required field");
-        }
-
-        return { url: POSTGRES_URL };
-      },
-    }),
+    PgModule.register({ global: true, url: POSTGRES_URL }),
     TarefasModule,
     UsuariosModule,
-    SessoesModule.registerAsync({
-      useFactory: () => {
-        const { SECRET } = process.env;
-
-        if (SECRET === undefined) {
-          throw new Error("SECRET is a required field");
-        }
-
-        return { secret: SECRET };
-      },
-    }),
+    SessoesModule.register({ secret: SECRET }),
+    AutenticacoesModule.register({ global: true, secret: SECRET }),
   ],
 })
 export class AppModule {}

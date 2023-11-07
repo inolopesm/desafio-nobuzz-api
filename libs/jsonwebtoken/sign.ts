@@ -1,6 +1,6 @@
 import * as crypto from "node:crypto";
 
-export default function sign(payload: unknown, secret: string): string {
+export function sign(payload: unknown, secret: string): string {
   const header = { alg: "HS256", typ: "JWT" };
   const stringifiedHeader = JSON.stringify(header);
   const headerBase64 = Buffer.from(stringifiedHeader).toString("base64url");

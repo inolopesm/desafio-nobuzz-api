@@ -8,13 +8,16 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 
 import { PgProvider } from "libs/pg";
+import { AutenticacoesGuard } from "../autenticacoes/autenticacoes.guard";
 import { CreateTarefaDto } from "./dto/create-tarefa.dto";
 import { UpdateTarefaDto } from "./dto/update-tarefa.dto";
 import { Tarefa } from "./entities/tarefa.entity";
 
+@UseGuards(AutenticacoesGuard)
 @Controller("v1/api/tarefas")
 export class TarefasController {
   constructor(private readonly pg: PgProvider) {}

@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 
 import * as argon2 from "argon2";
-import jwtSign from "libs/jsonwebtoken/sign";
+import * as jwt from "libs/jsonwebtoken";
 import { PgProvider } from "../../libs/pg/pg.provider";
 import { CreateSessaoDto } from "./dto/create-sessao.dto";
 import { Usuario } from "../usuarios/entities/usuario.entity";
@@ -55,7 +55,7 @@ export class SessoesController {
     }
 
     const payload: PayloadDto = { sub: usuario.id, email: usuario.email };
-    const accessToken = jwtSign(payload, this.secret);
+    const accessToken = jwt.sign(payload, this.secret);
     const sessionDto: SessionDto = { accessToken };
 
     return sessionDto;
