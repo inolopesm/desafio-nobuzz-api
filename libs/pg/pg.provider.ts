@@ -1,13 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { Pool } from "pg";
+import { PgOptions } from "./pg-options.interface";
+import { PG_OPTIONS } from "./pg.constants";
 
 @Injectable()
 export class PgProvider {
   private readonly pool: Pool;
   private connected = false;
 
-  constructor(connectionString: string) {
-    this.pool = new Pool({ connectionString });
+  constructor(@Inject(PG_OPTIONS) pgOptions: PgOptions) {
+    this.pool = new Pool({ connectionString: pgOptions.url });
   }
 
   async query(sql: string, values?: unknown[]) {

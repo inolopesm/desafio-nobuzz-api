@@ -10,7 +10,7 @@ import {
   Put,
 } from "@nestjs/common";
 
-import { PgProvider } from "../pg/pg.provider";
+import { PgProvider } from "libs/pg";
 import { CreateTarefaDto } from "./dto/create-tarefa.dto";
 import { UpdateTarefaDto } from "./dto/update-tarefa.dto";
 import { Tarefa } from "./entities/tarefa.entity";

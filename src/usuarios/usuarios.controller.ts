@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import * as argon2 from "argon2";
-import { PgProvider } from "../pg/pg.provider";
+import { PgProvider } from "libs/pg";
 import { CreateUsuarioDto } from "./dto/create-usuario.dto";
 import { UsuarioDto } from "./dto/usuario.dto";
 import { Usuario } from "./entities/usuario.entity";
