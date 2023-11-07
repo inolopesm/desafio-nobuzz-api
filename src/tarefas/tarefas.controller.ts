@@ -65,13 +65,13 @@ export class TarefasController {
     @Body() updateTarefaDto: UpdateTarefaDto
   ) {
     const selectResult = await this.pg.query(
-      'SELECT * FROM "Tarefa" WHERE "id" = $1',
+      'SELECT COUNT(*) FROM "Tarefa" WHERE "id" = $1',
       [id]
     );
 
-    const [tarefa] = selectResult.rows as Tarefa[];
+    const count = Number.parseInt(selectResult.rows[0].count, 10);
 
-    if (tarefa === undefined) {
+    if (count === 0) {
       throw new BadRequestException("Tarefa not found");
     }
 
@@ -91,13 +91,13 @@ export class TarefasController {
   @Delete(":id")
   async remove(@Param("id", ParseUUIDPipe) id: string) {
     const selectResult = await this.pg.query(
-      'SELECT * FROM "Tarefa" WHERE "id" = $1',
+      'SELECT COUNT(*) FROM "Tarefa" WHERE "id" = $1',
       [id]
     );
 
-    const [tarefa] = selectResult.rows as Tarefa[];
+    const count = Number.parseInt(selectResult.rows[0].count, 10);
 
-    if (tarefa === undefined) {
+    if (count === 0) {
       throw new BadRequestException("Tarefa not found");
     }
 
