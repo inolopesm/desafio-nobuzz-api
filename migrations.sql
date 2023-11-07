@@ -28,3 +28,19 @@ CREATE OR REPLACE TRIGGER set_dataatualizacao_to_now
 BEFORE UPDATE ON "Tarefa"
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_dataatualizacao_to_now();
+
+-- 2023-11-07T11:11:00-03:00
+
+CREATE TABLE IF NOT EXISTS "Usuario" (
+  "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+  "email" CHARACTER VARYING(254) NOT NULL,
+  "senha" TEXT NOT NULL,
+  "dataCriacao" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "dataAtualizacao" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY ("id")
+);
+
+CREATE OR REPLACE TRIGGER set_dataatualizacao_to_now
+BEFORE UPDATE ON "Usuario"
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_dataatualizacao_to_now();
