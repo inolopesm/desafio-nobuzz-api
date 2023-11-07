@@ -2,12 +2,14 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from "@nestjs/common";
+
 import { CreateTarefaDto } from "./dto/create-tarefa.dto";
 import { PgProvider } from "src/pg/pg.provider";
 import { Tarefa } from "./entities/tarefa.entity";
@@ -84,5 +86,26 @@ export class TarefasController {
     );
 
     return updateResult.rows[0] as Tarefa;
+  }
+
+  @Delete(":id")
+  async remove(@Param("id", ParseUUIDPipe) id: string) {
+    const selectResult = await this.pg.query(
+      'SELECT * FROM "Tarefa" WHERE "id" = $1',
+      [id]
+    );
+
+    const [tarefa] = selectResult.rows as Tarefa[];
+
+    if (tarefa === undefined) {
+      throw new BadRequestException("Tarefa not found");
+    }
+
+    const deleteResult = await this.pg.query(
+      'DELETE FROM "Tarefa" WHERE "id" = $1 RETURNING *',
+      [id]
+    );
+
+    return deleteResult.rows[0] as Tarefa;
   }
 }
