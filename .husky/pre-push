@@ -4,3 +4,4 @@
 npx eslint "src/**/*.ts" --fix
 npx prettier --check "src/**/*.ts"
 npx tsc --pretty --noEmit
+npm test
