@@ -11,7 +11,7 @@
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,libs}/**/*.ts\" --fix",
     "prepare": "husky install",
-    "test": "glob -c \"node --test --require ts-node/register\" \"{src,libs}/**/*.spec.ts\""
+    "test": "find src libs -name \"*.spec.ts\" | xargs node --test --require ts-node/register"
   },
   "dependencies": {
     "@nestjs/common": "^10.2.8",
@@ -34,7 +34,6 @@
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
-    "glob": "^10.3.10",
     "husky": "^8.0.0",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
