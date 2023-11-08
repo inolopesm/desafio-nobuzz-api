@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx eslint "src/**/*.ts" --fix
-npx prettier --check "src/**/*.ts"
+npx eslint "{src,libs}/**/*.ts"
+npx prettier --check "{src,libs}/**/*.ts"
 npx tsc --pretty --noEmit
 npm test

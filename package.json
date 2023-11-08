@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
+    "format": "prettier --write \"{src,libs}/**/*.ts\"",
     "nest": "node --env-file=.env node_modules/@nestjs/cli/bin/nest",
     "start": "npm run nest -- start",
     "start:dev": "npm run nest -- start --watch",
@@ -11,7 +11,7 @@
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,libs}/**/*.ts\" --fix",
     "prepare": "husky install",
-    "test": "glob -c \"node --test --require ts-node/register\" \"src/**/*.spec.ts\" \"libs/**/*.spec.ts\""
+    "test": "glob -c \"node --test --require ts-node/register\" \"{src,libs}/**/*.spec.ts\""
   },
   "dependencies": {
     "@nestjs/common": "^10.2.8",
