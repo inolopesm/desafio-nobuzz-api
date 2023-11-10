@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -13,6 +14,7 @@ import {
 
 import { PgProvider } from "libs/pg";
 import { AutenticacoesGuard } from "../autenticacoes/autenticacoes.guard";
+import { ConclusaoTarefaDto } from "./dto/conclusao-tarefa.dto";
 import { CreateTarefaDto } from "./dto/create-tarefa.dto";
 import { UpdateTarefaDto } from "./dto/update-tarefa.dto";
 import { Tarefa } from "./entities/tarefa.entity";
@@ -110,5 +112,29 @@ export class TarefasController {
     );
 
     return deleteResult.rows[0] as Tarefa;
+  }
+
+  @Patch(":id/conclusao")
+  async conclusao(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() conclusaoTarefaDto: ConclusaoTarefaDto
+  ) {
+    const selectResult = await this.pg.query(
+      'SELECT COUNT(*) FROM "Tarefa" WHERE "id" = $1',
+      [id]
+    );
+
+    const count = Number.parseInt(selectResult.rows[0].count, 10);
+
+    if (count === 0) {
+      throw new BadRequestException("Tarefa not found");
+    }
+
+    const updateResult = await this.pg.query(
+      'UPDATE "Tarefa" SET "dataConclusao" = $1 WHERE "id" = $2 RETURNING *',
+      [conclusaoTarefaDto.concluido ? new Date().toISOString() : null, id]
+    );
+
+    return updateResult.rows[0] as Tarefa;
   }
 }
